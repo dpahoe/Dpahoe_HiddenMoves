@@ -2,7 +2,7 @@
 // Dpahoe_HiddenMoves.js
 //=============================================================================
 /*:
- * @plugindesc [1.1] Enables Hidden Moves (HM) usages outside battle 
+ * @plugindesc [1.3] Enables Hidden Moves (HM) usages outside battle 
  *
  * @author Dpahoe
  *
@@ -19,7 +19,7 @@
  * @default Use %1 on this object
  *
  * @param Skill-A Show Skill Prompt
- * @desc [ON/OFF] Choose whether to show a choice to use skill, when interating with HM object. Else player will have to use skill beforehand.
+ * @desc [ON/OFF] Choose to show choice to use skill on interating with object. Else skill is used directly.
  * @default ON
  *
  * @param Skill-B ID
@@ -35,7 +35,7 @@
  * @default Use %1 on this object
  *
  * @param Skill-B Show Skill Prompt
- * @desc [ON/OFF] Choose whether to show a choice to use skill, when interating with HM object. Else player will have to use skill beforehand.
+ * @desc [ON/OFF] Choose to show choice to use skill on interating with object. Else skill is used directly.
  * @default ON
  *
  * @param Skill-C ID
@@ -51,7 +51,7 @@
  * @default Use %1 on this object
  *
  * @param Skill-C Show Skill Prompt
- * @desc [ON/OFF] Choose whether to show a choice to use skill, when interating with HM object. Else player will have to use skill beforehand.
+ * @desc [ON/OFF] Choose to show choice to use skill on interating with object. Else skill is used directly.
  * @default ON
  *
  * @param Skill-D ID
@@ -67,7 +67,7 @@
  * @default Use %1 on this object
  *
  * @param Skill-D Show Skill Prompt
- * @desc [ON/OFF] Choose whether to show a choice to use skill, when interating with HM object. Else player will have to use skill beforehand.
+ * @desc [ON/OFF] Choose to show choice to use skill on interating with object. Else skill is used directly.
  * @default ON
  *
  * @param Skill-E ID
@@ -83,7 +83,7 @@
  * @default Use %1 on this object
  *
  * @param Skill-E Show Skill Prompt
- * @desc [ON/OFF] Choose whether to show a choice to use skill, when interating with HM object. Else player will have to use skill beforehand.
+ * @desc [ON/OFF] Choose to show choice to use skill on interating with object. Else skill is used directly.
  * @default ON
  *
  * @param Skill-F ID
@@ -99,7 +99,7 @@
  * @default Use %1 on this object
  *
  * @param Skill-F Show Skill Prompt
- * @desc [ON/OFF] Choose whether to show a choice to use skill, when interating with HM object. Else player will have to use skill beforehand.
+ * @desc [ON/OFF] Choose to show choice to use skill on interating with object. Else skill is used directly.
  * @default ON
  *
  * @param Skill-G ID
@@ -115,7 +115,7 @@
  * @default Use %1 on this object
  *
  * @param Skill-G Show Skill Prompt
- * @desc [ON/OFF] Choose whether to show a choice to use skill, when interating with HM object. Else player will have to use skill beforehand.
+ * @desc [ON/OFF] Choose to show choice to use skill on interating with object. Else skill is used directly.
  * @default ON
  *
  * @param Skill-H ID
@@ -131,27 +131,34 @@
  * @default Use %1 on this object
  *
  * @param Skill-H Show Skill Prompt
- * @desc [ON/OFF] Choose whether to show a choice to use skill, when interating with HM object. Else player will have to use skill beforehand.
+ * @desc [ON/OFF] Choose to show choice to use skill on interating with object. Else skill is used directly.
  * @default ON
  *
  * @help
  *
  * - You can enter upto 8 skills to be used as HM.
+ * - Make sure the skills are Magic/Special type, or any custom type that
+ *   can be used outside battle from Menu.
  * - Enter the skill's ID and the text to be shown while activating the HM.
- * - Enter Plugin Command: HMObject <skill ID> on any event that needs to be affected by that skill.
- * - Whenever that skill is used outside battle, the event with HMObject Plugin Command will turn it's Self Switch C ON,
+ * - Enter Plugin Command: HMObject <skill ID> on any event that needs to be 
+ *   affected by that skill.
+ * - Whenever that skill is used outside battle, the event with HMObject Plugin 
+ *   Command will turn it's Self Switch C ON,
  * if the event is triggered.
  *
  * Change Log 
  * ---------- 
  * v1.2
  * - Fixed a bug where blank object and event texts are still showing
- * - Added Show Skill Prompt parameter. Now you can choose whether to show the text prompt to use skill when interacting with the object
+ * - Added "Show Skill Prompt" parameter. Now you can choose whether to show the 
+ *   text prompt to use skill when interacting with the object
  *
  * v1.1 
- * - Removed usage of external common events. Therefore HMEvent plugin command not required.
+ * - Removed usage of external common events. Therefore HMEvent plugin command 
+ *   not required.
  * - Added skill usage directly from interacting the HMObject.
- * - Fixed a bug, where you use a skill and open menu again, the skill used state becomes lost.
+ * - Fixed a bug, where you use a skill and open menu again, the skill used state
+ *   becomes lost.
  *
  * v1.0 
  * - First version 
@@ -231,8 +238,12 @@
     			}
     			else{
     				if(typeof object_texts[hmobject_skill_id] !== 'undefined'){
-	    				if(object_texts[hmobject_skill_id] != '')
+	    				if(	object_texts[hmobject_skill_id] != '' && 
+	    					!$gameParty.members().some(function(actor) {return actor.hasSkill(hmobject_skill_id)})){
+
+	    					// Object text only shown if it's not empty, and if player hasn't learned the skill.
 	    					$gameMessage.add(object_texts[hmobject_skill_id].replace('%1', $dataSkills[parseInt(hmobject_skill_id)].name));
+	    				}
 
 	    				if(typeof hm_prompts[hmobject_skill_id] === 'undefined' || hm_prompts[hmobject_skill_id]){
 		    				if($gameParty.members().some(function(actor) {return actor.hasSkill(hmobject_skill_id)})){
@@ -252,6 +263,16 @@
 							    	// Player chose "No"
 							  	}
 							});
+	    				}
+	    				else{
+	    					// No, hm prompt, so player chose "Yes"
+	    					if($gameParty.members().some(function(actor) {return actor.hasSkill(hmobject_skill_id)})){
+							    let map_id = $gameMap._mapId;
+								let key = [map_id, event_id, 'C'];
+								$gameSelfSwitches.setValue(key, true);
+								resetHmStatusArray();
+								hm_status_array[hmobject_skill_id] = true;
+							}
 	    				}
     				}
     				else{
