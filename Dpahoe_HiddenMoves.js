@@ -15,7 +15,7 @@
  * @default %1 is usable now!
  *
  * @param Skill-A Object text
- * @desc Text to be displayed, when player interacts with an HM applicable object. %1 will be replaced by Skill name.
+ * @desc Text shown when interacted with skill's object if the skill is not learned. %1 will be replaced by Skill name.
  * @default Use %1 on this object
  *
  * @param Skill-A Show Skill Prompt
@@ -31,7 +31,7 @@
  * @default %1 is usable now!
  *
  * @param Skill-B Object text
- * @desc Text to be displayed, when player interacts with an HM applicable object. %1 will be replaced by Skill name.
+ * @desc Text shown when interacted with skill's object if the skill is not learned. %1 will be replaced by Skill name.
  * @default Use %1 on this object
  *
  * @param Skill-B Show Skill Prompt
@@ -47,7 +47,7 @@
  * @default %1 is usable now!
  *
  * @param Skill-C Object text
- * @desc Text to be displayed, when player interacts with an HM applicable object. %1 will be replaced by Skill name.
+ * @desc Text shown when interacted with skill's object if the skill is not learned. %1 will be replaced by Skill name.
  * @default Use %1 on this object
  *
  * @param Skill-C Show Skill Prompt
@@ -63,7 +63,7 @@
  * @default %1 is usable now!
  *
  * @param Skill-D Object text
- * @desc Text to be displayed, when player interacts with an HM applicable object. %1 will be replaced by Skill name.
+ * @desc Text shown when interacted with skill's object if the skill is not learned. %1 will be replaced by Skill name.
  * @default Use %1 on this object
  *
  * @param Skill-D Show Skill Prompt
@@ -79,7 +79,7 @@
  * @default %1 is usable now!
  *
  * @param Skill-E Object text
- * @desc Text to be displayed, when player interacts with an HM applicable object. %1 will be replaced by Skill name.
+ * @desc Text shown when interacted with skill's object if the skill is not learned. %1 will be replaced by Skill name.
  * @default Use %1 on this object
  *
  * @param Skill-E Show Skill Prompt
@@ -95,7 +95,7 @@
  * @default %1 is usable now!
  *
  * @param Skill-F Object text
- * @desc Text to be displayed, when player interacts with an HM applicable object. %1 will be replaced by Skill name.
+ * @desc Text shown when interacted with skill's object if the skill is not learned. %1 will be replaced by Skill name.
  * @default Use %1 on this object
  *
  * @param Skill-F Show Skill Prompt
@@ -111,7 +111,7 @@
  * @default %1 is usable now!
  *
  * @param Skill-G Object text
- * @desc Text to be displayed, when player interacts with an HM applicable object. %1 will be replaced by Skill name.
+ * @desc Text shown when interacted with skill's object if the skill is not learned. %1 will be replaced by Skill name.
  * @default Use %1 on this object
  *
  * @param Skill-G Show Skill Prompt
@@ -127,7 +127,7 @@
  * @default %1 is usable now!
  *
  * @param Skill-H Object text
- * @desc Text to be displayed, when player interacts with an HM applicable object. %1 will be replaced by Skill name.
+ * @desc Text shown when interacted with skill's object if the skill is not learned. %1 will be replaced by Skill name.
  * @default Use %1 on this object
  *
  * @param Skill-H Show Skill Prompt
@@ -148,6 +148,10 @@
  *
  * Change Log 
  * ---------- 
+ * v1.3
+ * - Fixed a bug in a case when "Show Skill Prompt" is OFF, skill is not used.
+ * - Object texts are now shown only if party hasn't learned the skill.
+ *
  * v1.2
  * - Fixed a bug where blank object and event texts are still showing
  * - Added "Show Skill Prompt" parameter. Now you can choose whether to show the 
